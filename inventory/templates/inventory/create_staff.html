@@ -1,0 +1,13 @@
+<!-- create_staff.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Create New Staff</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Staff</button>
+    </form>
+</div>
+{% endblock %}

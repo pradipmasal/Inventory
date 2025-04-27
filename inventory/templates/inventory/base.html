@@ -1,0 +1,100 @@
+<!-- templates/inventory/base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add Bootstrap CSS in <head> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding-top: 30px;
+            position: fixed;
+            height: 100%;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            background: #495057;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+        .topbar {
+            background: #f8f9fa;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+<div class="sidebar text-center">
+    <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Logo" width="100" height="100">
+    <h4>Inventory</h4>
+
+    {% if user.is_staff %}
+        <!-- Admin Sidebar -->
+        <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+        <a href="{% url 'available_components' %}">📦 Available Components</a>
+        <a href="{% url 'issued_components' %}">Issued Components</a>
+        <a href="{% url 'returned_components' %}">Returned Components</a>
+        <a href="{% url 'view_all_users' %}">View All Users</a>
+        <a href="{% url 'add_component' %}">Add Component</a>
+        {% if request.user.is_superuser %}
+            <a href="{% url 'create_staff' %}">➕ Create Staff</a>
+            <a href="{% url 'staff_list' %}">👥 Staff List</a>
+
+        {% endif %}
+    {% else %}
+        <!-- User Sidebar -->
+        <a href="{% url 'available_components' %}">📦 Available Components</a>
+        <a href="{% url 'issued_components' %}">Issued Components</a>
+        <a href="{% url 'returned_components' %}">Returned Components</a>
+
+    {% endif %}
+    
+    <a href="{% url 'logout' %}">Logout</a>
+</div>
+{% endif %}
+
+<div class="content">
+
+    <!-- Top bar to show logged-in user -->
+    {% if user.is_authenticated %}
+    <div class="topbar">
+        <div>Welcome, <strong>{{ user.username }}</strong>!</div>
+        <div><a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a></div>
+    </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

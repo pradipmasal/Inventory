@@ -1,0 +1,12 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Admin Dashboard</h2>
+    <p>Welcome, Admin! Choose an action:</p>
+    <ul class="list-group">
+        <li class="list-group-item"><a href="{% url 'add_component' %}">Add New Component</a></li>
+        <li class="list-group-item"><a href="{% url 'view_users' %}">View All Users</a></li>
+    </ul>
+</div>
+{% endblock %}

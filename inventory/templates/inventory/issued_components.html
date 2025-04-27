@@ -1,0 +1,26 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<h2>My Issued Components</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Component</th>
+            <th>Quantity Issued</th>
+            <th>Issue Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in issued %}
+        <tr>
+            <td>{{ item.component.name }}</td>
+            <td>{{ item.quantity_issued }}</td>
+            <td>{{ item.issue_date }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No components issued.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!-- templates/inventory/user_dashboard.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<h2>User Dashboard</h2>
+
+<div class="row text-center">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Available Components</h5>
+                <a href="{% url 'available_components' %}" class="btn btn-primary">View</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Issued Components</h5>
+                <a href="{% url 'issued_components' %}" class="btn btn-warning">View</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Returned Components</h5>
+                <a href="{% url 'returned_components' %}" class="btn btn-success">View</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

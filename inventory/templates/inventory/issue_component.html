@@ -1,0 +1,11 @@
+<!-- templates/inventory/issue_component.html -->
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<h2>Issue Component</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-warning">Issue</button>
+</form>
+{% endblock %}
