@@ -1,28 +1,32 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-<h2>Available Components</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-primary fw-bold">Available Components</h2>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Quantity</th>
-            <th>Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for component in components %}
-        <tr>
-            <td>{{ component.name }}</td>
-            <td>{{ component.category }}</td>
-            <td>{{ component.quantity }}</td>
-            <td>{{ component.price }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="4">No components available.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered shadow-sm rounded-3">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for component in components %}
+                <tr>
+                    <td>{{ component.name }}</td>
+                    <td>{{ component.category }}</td>
+                    <td>{{ component.quantity }}</td>
+                    <td>${{ component.price }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center text-muted">No components available.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

@@ -1,9 +1,18 @@
-<!-- staff_success.html -->
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-<div class="container">
-    <h2>Staff Created Successfully!</h2>
-    <a href="{% url 'create_staff' %}">Create Another Staff</a>
+<div class="container d-flex justify-content-center align-items-center min-vh-50">
+    <div class="card shadow-lg p-5 rounded-4 text-center" style="max-width: 500px; background: #f8fafc;">
+        <h2 class="mb-4 fw-bold text-success">✅ Staff Created Successfully!</h2>
+        <p class="text-muted mb-4">You have successfully added a new staff member to the system.</p>
+        <a href="{% url 'create_staff' %}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">Create Another Staff</a>
+    </div>
 </div>
+
+<style>
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+}
+</style>
 {% endblock %}
