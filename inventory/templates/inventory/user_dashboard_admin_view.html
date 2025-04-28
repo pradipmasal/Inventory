@@ -1,0 +1,85 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Dashboard of {{ viewed_user }}</h2>
+
+    <h4>Issued Components</h4>
+    <ul class="list-group mb-4">
+        {% for item in issued %}
+        <div class="card shadow-lg p-4 rounded-4">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Component</th>
+                            <th>Quantity Issued</th>
+                            <th>Issue Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in issued %}
+                        <tr>
+                            <td>{{ item.component.name }}</td>
+                            <td>{{ item.quantity_issued }}</td>
+                            <td>{{ item.issue_date }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">
+                                No components issued.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% empty %}
+        <li class="list-group-item text-muted">No components issued.</li>
+        {% endfor %}
+    </ul>
+
+    <h4>Returned Components</h4>
+    <ul class="list-group">
+        {% for item in returned %}
+        <div class="card shadow-lg p-4 rounded-4">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Component</th>
+                            <th>Quantity Issued</th>
+                            <th>Issue Date</th>
+                            <th>Return Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in returned %}
+                        <tr>
+                            <td>{{ item.component.name }}</td>
+                            <td>{{ item.quantity_issued }}</td>
+                            <td>{{ item.issue_date }}</td>
+                            <td>{{ item.return_date }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">
+                                No components returned yet.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% empty %}
+        <li class="list-group-item text-muted">No components returned.</li>
+        {% endfor %}
+    </ul>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'view_all_users' %}" class="btn btn-secondary">← Back to All Users</a>
+    </div>
+</div>
+{% endblock %}

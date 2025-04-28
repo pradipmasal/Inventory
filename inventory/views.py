@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Component, IssuedComponent
+from .models import Component, IssuedComponent, ReturnedComponent
 from .forms import ComponentForm, IssueComponentForm, UserRegisterForm, StaffCreationForm, ReturnComponentForm
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
@@ -262,7 +262,7 @@ def load_user_components(request):
 
 @login_required
 def returned_components(request):
-    returned = IssuedComponent.objects.filter(user=request.user, returned=True)
+    returned = ReturnedComponent.objects.filter(user=request.user)
     return render(request, 'inventory/returned_components.html', {'returned': returned})
 
 @superuser_required
@@ -286,3 +286,20 @@ def delete_user(request, user_id):
         return redirect('view_all_users')
 
     return render(request, 'inventory/delete_user_confirm.html', {'user_obj': user})
+
+@superuser_required
+def user_dashboard_admin_view(request, user_id):
+    if not request.user.is_staff:
+        return redirect('home')  # Optional: only allow staff/admins
+
+    user = get_object_or_404(User, id=user_id)
+
+    issued = IssuedComponent.objects.filter(user=user)
+    returned = ReturnedComponent.objects.filter(user=user)
+
+    context = {
+        'viewed_user': user,
+        'issued': issued,
+        'returned': returned,
+    }
+    return render(request, 'inventory/user_dashboard_admin_view.html', context)

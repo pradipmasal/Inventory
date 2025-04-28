@@ -34,7 +34,13 @@
                         {% for user in users %}
                         <tr class="hover-row">
                             <td>{{ forloop.counter }}</td>
-                            <td>{{ user.username }}</td>
+                             <!-- Make Username Clickable -->
+                             <td>
+                                <a href="{% url 'user_dashboard_admin_view' user.id %}"
+                                    class="text-decoration-none fw-bold">
+                                    {{ user.username }}
+                                </a>
+                            </td>
                             <td>{{ user.email }}</td>
                             <td>
                                 {% if user.is_staff %}
