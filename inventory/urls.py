@@ -23,4 +23,5 @@ urlpatterns = [
     path('make-user/<int:user_id>/', views.make_user, name='make_user'),
     path('return-component/', views.return_component, name='return_component'),
     path('ajax/load-components/', views.load_user_components, name='ajax_load_components'),
+    path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
 ]

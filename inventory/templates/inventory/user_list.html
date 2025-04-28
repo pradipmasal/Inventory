@@ -7,9 +7,12 @@
 
     <!-- Filter Buttons -->
     <div class="mb-4 text-center animate__animated animate__fadeInUp animate__delay-1s">
-        <a href="{% url 'view_all_users' %}?user_type=all" class="btn {% if selected_type == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill mx-1 shadow-sm">All</a>
-        <a href="{% url 'view_all_users' %}?user_type=staff" class="btn {% if selected_type == 'staff' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill mx-1 shadow-sm">Staff</a>
-        <a href="{% url 'view_all_users' %}?user_type=user" class="btn {% if selected_type == 'user' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill mx-1 shadow-sm">Users</a>
+        <a href="{% url 'view_all_users' %}?user_type=all"
+            class="btn {% if selected_type == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill mx-1 shadow-sm">All</a>
+        <a href="{% url 'view_all_users' %}?user_type=staff"
+            class="btn {% if selected_type == 'staff' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill mx-1 shadow-sm">Staff</a>
+        <a href="{% url 'view_all_users' %}?user_type=user"
+            class="btn {% if selected_type == 'user' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill mx-1 shadow-sm">Users</a>
     </div>
 
     <!-- Table Card -->
@@ -35,30 +38,40 @@
                             <td>{{ user.email }}</td>
                             <td>
                                 {% if user.is_staff %}
-                                    <span class="badge bg-warning text-dark">Staff</span>
+                                <span class="badge bg-warning text-dark">Staff</span>
                                 {% else %}
-                                    <span class="badge bg-secondary">User</span>
+                                <span class="badge bg-secondary">User</span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if user.is_active %}
-                                    <span class="badge bg-success">Active</span>
+                                <span class="badge bg-success">Active</span>
                                 {% else %}
-                                    <span class="badge bg-danger">Inactive</span>
+                                <span class="badge bg-danger">Inactive</span>
                                 {% endif %}
                             </td>
                             <td>
                                 {% if user.is_staff %}
-                                    <form method="post" action="{% url 'make_user' user.id %}" class="d-inline">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Make User</button>
-                                    </form>
+                                <form method="post" action="{% url 'make_user' user.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Make
+                                        User</button>
+                                </form>
                                 {% else %}
-                                    <form method="post" action="{% url 'make_staff' user.id %}" class="d-inline">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm btn-outline-success rounded-pill">Make Staff</button>
-                                    </form>
+                                <form method="post" action="{% url 'make_staff' user.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-success rounded-pill">Make
+                                        Staff</button>
+                                </form>
                                 {% endif %}
+                                <!-- 🔥 Add Delete User Button here -->
+                                <form method="post" action="{% url 'delete_user' user.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill mt-1"
+                                        onclick="return confirm('Are you sure you want to delete {{ user.username }} and return all components?')">
+                                        🗑️ Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         {% empty %}

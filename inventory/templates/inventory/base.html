@@ -91,13 +91,13 @@
         <a href="{% url 'available_components' %}">📦 Available Components</a>
         <a href="{% url 'issued_components' %}">📤 Issued Components</a>
         <a href="{% url 'returned_components' %}">📥 Returned Components</a>
-        <a href="{% url 'view_all_users' %}">👥 View All Users</a>
         <a href="{% url 'add_component' %}">➕ Add Component</a>
         <a href="{% url 'issue_component' %}">📤 Issue Component to User</a>
         <a href="{% url 'return_component' %}">📥 Return Component from User</a>
 
 
         {% if request.user.is_superuser %}
+        <a href="{% url 'view_all_users' %}">👥 View All Users</a>
         <a href="{% url 'create_staff' %}">➕ Create Staff</a>
         <a href="{% url 'staff_list' %}">👥 Staff List</a>
 

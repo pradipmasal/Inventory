@@ -264,3 +264,25 @@ def load_user_components(request):
 def returned_components(request):
     returned = IssuedComponent.objects.filter(user=request.user, returned=True)
     return render(request, 'inventory/returned_components.html', {'returned': returned})
+
+@superuser_required
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id, is_superuser=False)
+
+    if request.method == 'POST':
+        # Step 1: Check issued components
+        issued_components = IssuedComponent.objects.filter(user=user)
+
+        # Step 2: Return all issued components
+        for issued in issued_components:
+            component = issued.component
+            component.quantity += issued.quantity_issued  # Return back the stock
+            component.save()
+            issued.delete()  # Remove issued record after returning
+
+        # Step 3: Delete user
+        user.delete()
+
+        return redirect('view_all_users')
+
+    return render(request, 'inventory/delete_user_confirm.html', {'user_obj': user})
