@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Component, IssuedComponent
-from .forms import ComponentForm, IssueComponentForm, UserRegisterForm, StaffCreationForm
+from .forms import ComponentForm, IssueComponentForm, UserRegisterForm, StaffCreationForm, ReturnComponentForm
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.utils import timezone
 
 # User Registration
 def register_view(request):
@@ -107,17 +109,36 @@ def user_dashboard(request):
 
 @login_required
 def add_component(request):
-    if not request.user.is_staff:
-        return redirect('available_components')
-
     if request.method == 'POST':
         form = ComponentForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('available_components')
+            name = form.cleaned_data['name']
+            category = form.cleaned_data['category']
+            quantity = form.cleaned_data['quantity']
+            price = form.cleaned_data['price']
+
+            # Check if a component with same name and category exists
+            component, created = Component.objects.get_or_create(
+                name=name,
+                category=category,
+                defaults={'quantity': quantity, 'price': price}
+            )
+
+            if not created:
+                # Already exists ➔ Update quantity
+                component.quantity += quantity
+
+                # Optional: update price if admin changed it
+                component.price = price
+
+                component.save()
+
+            return redirect('admin_dashboard')
     else:
         form = ComponentForm()
+
     return render(request, 'inventory/add_component.html', {'form': form})
+
 
 @superuser_required
 def view_all_users(request):
@@ -158,12 +179,30 @@ def issue_component(request):
     if request.method == 'POST':
         form = IssueComponentForm(request.POST)
         if form.is_valid():
-            issue = form.save()
-            issue.component.quantity -= issue.quantity_issued
-            issue.component.save()
+            user = form.cleaned_data['user']
+            component = form.cleaned_data['component']
+            quantity_issued = form.cleaned_data['quantity_issued']
+
+            # Check if already issued
+            issued_record, created = IssuedComponent.objects.get_or_create(
+                user=user,
+                component=component,
+                defaults={'quantity_issued': quantity_issued, 'issue_date': timezone.now()}
+            )
+
+            if not created:
+                # Already issued ➔ Update quantity
+                issued_record.quantity_issued += quantity_issued
+                issued_record.save()
+
+            # Reduce available stock from Component
+            component.quantity -= quantity_issued
+            component.save()
+
             return redirect('admin_dashboard')
     else:
         form = IssueComponentForm()
+
     return render(request, 'inventory/issue_component.html', {'form': form})
 
 @login_required
@@ -175,6 +214,51 @@ def available_components(request):
 def issued_components(request):
     issued = IssuedComponent.objects.filter(user=request.user, returned=False)
     return render(request, 'inventory/issued_components.html', {'issued': issued})
+
+def return_component(request):
+    if request.method == 'POST':
+        form = ReturnComponentForm(request.POST)
+        if form.is_valid():
+            returned_component = form.save(commit=False)
+
+            # Find the issued record
+            issued_record = IssuedComponent.objects.filter(
+                user=returned_component.user,
+                component=returned_component.component
+            ).first()
+
+            if issued_record:
+                returned_component.quantity_issued = issued_record.quantity_issued
+                returned_component.issue_date = issued_record.issue_date
+
+                # 1. Update Component stock
+                component = returned_component.component
+                component.quantity += returned_component.quantity_returned
+                component.save()
+
+                # 2. Update or delete IssuedComponent
+                if returned_component.quantity_returned >= issued_record.quantity_issued:
+                    # If fully returned or over-returned, delete the issued record
+                    issued_record.delete()
+                else:
+                    # If partial return, reduce the quantity_issued
+                    issued_record.quantity_issued -= returned_component.quantity_returned
+                    issued_record.save()
+
+                # 3. Save the ReturnedComponent record
+                returned_component.save()
+
+                return redirect('admin_dashboard')
+    else:
+        form = ReturnComponentForm()
+
+    return render(request, 'inventory/return_component.html', {'form': form})
+
+def load_user_components(request):
+    user_id = request.GET.get('user')
+    issued_components = IssuedComponent.objects.filter(user_id=user_id).select_related('component')
+    components = [{'id': c.component.id, 'name': c.component.name} for c in issued_components]
+    return JsonResponse({'components': components})
 
 @login_required
 def returned_components(request):

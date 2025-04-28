@@ -23,3 +23,14 @@ class IssuedComponent(models.Model):
 
     def __str__(self):
         return f"{self.component.name} issued to {self.user.username}"
+
+class ReturnedComponent(models.Model):
+    component = models.ForeignKey(Component, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity_issued = models.PositiveIntegerField()
+    quantity_returned = models.PositiveIntegerField()
+    issue_date = models.DateField()
+    return_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} returned {self.quantity_returned} of {self.component.name}"
