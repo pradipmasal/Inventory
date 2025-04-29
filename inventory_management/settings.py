@@ -130,3 +130,8 @@ LOGIN_URL = '/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Ensure session data is stored in the browser, so it won't persist across server restarts
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+#SESSION_COOKIE_AGE = 0  # This makes sure the session expires as soon as the user leaves the page
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # This makes sure the session expires when the browser is closed

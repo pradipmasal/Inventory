@@ -1,12 +1,34 @@
 {% extends 'inventory/base.html' %}
 
+{% block title %}Add New Component{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h2>Add New Component</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Add Component</button>
-    </form>
+<div class="d-flex justify-content-center align-items-center min-vh-75" style="background: #f8f9fa;">
+    <div class="card shadow-lg p-5 rounded-4 animate__animated animate__fadeInUp" style="min-width: 400px; background: rgba(255, 255, 255, 0.95);">
+        <h2 class="text-center mb-4 fw-bold text-primary animate__animated animate__fadeInDown">➕ Add New Component</h2>
+
+        <form method="post" class="animate__animated animate__fadeIn animate__delay-1s">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg rounded-3 btn-animate shadow-sm">Add Component</button>
+            </div>
+        </form>
+    </div>
 </div>
+
+<!-- Optional: Button Hover Animation -->
+<style>
+.btn-animate {
+    transition: all 0.3s ease;
+}
+.btn-animate:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+</style>
+
+<!-- Animate.css Link (already assumed imported in base) -->
 {% endblock %}

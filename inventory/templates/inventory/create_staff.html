@@ -1,13 +1,18 @@
-<!-- create_staff.html -->
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-<div class="container">
-    <h2>Create New Staff</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Staff</button>
-    </form>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="card shadow-lg p-4 rounded-4" style="min-width: 400px; background: rgba(255, 255, 255, 0.9);">
+        <h2 class="text-center mb-4 fw-bold text-primary">Create New Staff</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+            <div class="d-grid gap-2 mt-3">
+                <button type="submit" class="btn btn-primary btn-lg rounded-3">Create Staff</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

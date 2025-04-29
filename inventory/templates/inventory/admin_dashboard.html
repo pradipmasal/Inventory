@@ -1,12 +1,67 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Admin Dashboard</h2>
-    <p>Welcome, Admin! Choose an action:</p>
-    <ul class="list-group">
-        <li class="list-group-item"><a href="{% url 'add_component' %}">Add New Component</a></li>
-        <li class="list-group-item"><a href="{% url 'view_users' %}">View All Users</a></li>
-    </ul>
+<div class="container py-5">
+    
+    <div class="text-center mb-5">
+        <h1 class="display-3 fw-bold text-gradient">Admin Dashboard</h1>
+        <p class="fs-5 text-muted">Manage your system easily and efficiently 🚀</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <!-- Card 1 -->
+        <div class="col-md-4">
+            <a href="{% url 'add_component' %}" class="text-decoration-none">
+                <div class="card shadow-lg border-0 h-100 bg-primary text-white rounded-4 hover-transform">
+                    <div class="card-body text-center p-5">
+                        <i class="bi bi-plus-circle display-1 mb-4"></i>
+                        <h4 class="card-title fw-bold">Add New Component</h4>
+                        <p class="card-text">Quickly create new inventory components.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="col-md-4">
+            <a href="{% url 'view_all_users' %}" class="text-decoration-none">
+                <div class="card shadow-lg border-0 h-100 bg-success text-white rounded-4 hover-transform">
+                    <div class="card-body text-center p-5">
+                        <i class="bi bi-people-fill display-1 mb-4"></i>
+                        <h4 class="card-title fw-bold">View All Users</h4>
+                        <p class="card-text">Check and manage all registered users.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col-md-4">
+            <a href="{% url 'issue_component' %}" class="text-decoration-none">
+                <div class="card shadow-lg border-0 h-100 bg-success text-white rounded-4 hover-transform">
+                    <div class="card-body text-center p-5">
+                        <i class="bi bi-people-fill display-1 mb-4"></i>
+                        <h4 class="card-title fw-bold">Issue Component to User</h4>
+                        <p class="card-text">Issue components to users.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="col-md-4">
+            <a href="{% url 'return_component' %}" class="text-decoration-none">
+                <div class="card shadow-lg border-0 h-100 bg-success text-white rounded-4 hover-transform">
+                    <div class="card-body text-center p-5">
+                        <i class="bi bi-people-fill display-1 mb-4"></i>
+                        <h4 class="card-title fw-bold">↩️ Return Component</h4>
+                        <p class="card-text">Return components from users.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
+
+
 {% endblock %}

@@ -1,11 +1,29 @@
-<!-- templates/inventory/issue_component.html -->
 {% extends 'inventory/base.html' %}
 
+{% block title %}Issue Component{% endblock %}
+
 {% block content %}
-<h2>Issue Component</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-warning">Issue</button>
-</form>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="card shadow-lg p-5 rounded-4" style="min-width: 450px; background: rgba(255, 255, 255, 0.9);">
+        <h2 class="text-center mb-4 fw-bold text-primary">📦 Issue Component</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.component.label_tag }}
+                {{ form.component }}
+            </div>
+            <div class="mb-3">
+                {{ form.user.label_tag }}
+                {{ form.user }}
+            </div>
+            <div class="mb-3">
+                {{ form.quantity_issued.label_tag }}
+                {{ form.quantity_issued }}
+            </div>
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-success btn-lg rounded-3">Issue Now</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
