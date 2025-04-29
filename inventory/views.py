@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.utils import timezone
+from django.contrib import messages
 
 # User Registration
 def register_view(request):
@@ -303,3 +304,11 @@ def user_dashboard_admin_view(request, user_id):
         'returned': returned,
     }
     return render(request, 'inventory/user_dashboard_admin_view.html', context)
+
+@superuser_required
+def delete_damaged_component(request, component_id):
+    component = get_object_or_404(Component, id=component_id)
+    component.quantity -= 1  # Decrease the quantity by 1
+    component.save()
+    messages.success(request, f"The damaged component '{component.name}' has been reduced.")
+    return redirect('available_components')  # Redirect to the component list

@@ -51,7 +51,7 @@
             color: white;
             text-decoration: none;
             display: block;
-            padding: 15px;
+            padding: 10px;
             transition: 0.3s;
         }
 
@@ -81,9 +81,13 @@
 
 
     {% if user.is_authenticated %}
-    <div class="sidebar text-center">
-        <img src="https://img.icons8.com/fluency/96/box.png" class="rounded-circle mb-3" alt="Inventory Logo" width="100" height="100">
+    <div class="sidebar">
+        <div class="sidebar_logo text-center mb-4">
+            
+        <img src="https://img.icons8.com/fluency/96/box.png" class="rounded-circle mb-3" alt="Inventory Logo"
+            width="100" height="100">
         <h4>Inventory</h4>
+        </div>
 
         {% if user.is_staff %}
         <!-- Admin Sidebar -->
@@ -110,7 +114,7 @@
 
         {% endif %}
 
-        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
     </div>
     {% endif %}
 
@@ -135,6 +139,24 @@
 
         <!-- Dark Mode Script -->
         <script>
+            // Check and apply the saved theme on page load
+            document.addEventListener('DOMContentLoaded', () => {
+                const body = document.getElementById('body');
+                const navbar = document.getElementById('navbar');
+                const modeIcon = document.getElementById('mode-icon');
+                const darkMode = localStorage.getItem('darkMode');
+
+                if (darkMode === 'enabled') {
+                    body.classList.add('bg-dark', 'text-light');
+                    body.classList.remove('bg-light');
+
+                    navbar.classList.add('navbar-dark', 'bg-dark');
+                    navbar.classList.remove('navbar-light', 'bg-white');
+
+                    modeIcon.classList.remove('bi-moon-stars-fill');
+                    modeIcon.classList.add('bi-brightness-high-fill'); // Sun icon
+                }
+            });
             function toggleDarkMode() {
                 const body = document.getElementById('body');
                 const navbar = document.getElementById('navbar');
@@ -152,9 +174,11 @@
                 if (body.classList.contains('bg-dark')) {
                     modeIcon.classList.remove('bi-moon-stars-fill');
                     modeIcon.classList.add('bi-brightness-high-fill'); // Sun icon
+                    localStorage.setItem('darkMode', 'enabled'); // Save preference
                 } else {
                     modeIcon.classList.remove('bi-brightness-high-fill');
                     modeIcon.classList.add('bi-moon-stars-fill'); // Moon icon
+                    localStorage.setItem('darkMode', 'disabled'); // Save preference
                 }
             }
         </script>
